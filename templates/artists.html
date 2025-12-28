@@ -5,43 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Groupie Tracker</title>
+    <link rel="stylesheet" href="/global.css">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=New+Rocker&display=swap');
-
-        :root {
-            --bg: #0f172a;
-            --card-bg: #111827;
-            --accent: #38bdf8;
-            --text: #e5e7eb;
-            --muted: #9ca3af;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: "Inter", system-ui, sans-serif;
-        }
-
-        .new-rocker-regular {
-            font-family: "New Rocker", system-ui;
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        body {
-            background: linear-gradient(135deg, #020617, #0f172a);
-            color: var(--text);
-            padding: 3rem;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            letter-spacing: 1px;
-        }
 
         .grid {
             display: grid;
@@ -134,20 +100,22 @@
 
 <body>
 
-    <h1 class="new-rocker-regular">Groupie Tracker</h1>
+    <header>
+        <h1 class="new-rocker-regular">Groupie Tracker</h1>
+    </header>
 
     <div class="grid">
 
         {{ range .Artists }}
         <!-- Artist Card -->
-        <div class="card">
+        <a class="card" href="/artists/{{.Id}}">
             <img src="{{.Image}}" alt="{{.Name}}">
 
             <div class="card-content">
                 <h2 class="new-rocker-regular">{{.Name}}</h2>
 
                 <div class="meta">
-                    Formed in 2005 · First album: "Echoes"
+                    Formed in {{.CreationDate}}
                 </div>
 
                 <div class="section">
@@ -165,7 +133,7 @@
                     <span><strong>Relations:</strong> example.com</span>
                 </div-->
             </div>
-        </div>
+        </a>
 
         <!-- Duplicate cards as needed -->
         {{end}}
