@@ -1,17 +1,18 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
+	"fmt"
 	"groupie-tracker/handlers"
+	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/global.css", handlers.CssHandler)
-	http.HandleFunc("/artists", handlers.ArtistsHandler)
-	http.HandleFunc("/artists/{id}", handlers.ArtistHandler)
-
-	log.Println("Server listening on 0.0.0.0:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.HandleFunc("/style.css", handlers.CssHandler)
+	http.HandleFunc("/", handlers.ArtistsHandler)
+	http.HandleFunc("/{id}", handlers.ArtistHandler)
+	fmt.Println("Server listening on localhost:8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Printf("could not start server... %s", err)
+	}
 }
