@@ -21,6 +21,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 		return structures.Artist{}, err
 	}
 	resp.Body.Close()
+	formatLocations(locationObject.Locations)
 	//get dateObject
 	resp, err = http.Get(artist.DatesApi)
 	if err != nil {
@@ -33,8 +34,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 		return structures.Artist{}, err
 	}
 	resp.Body.Close()
-	//format dates
-	dateObject.Dates = formatDates(dateObject.Dates)
+	formatDates(dateObject.Dates)
 	//get relationObject
 	resp, err = http.Get(artist.RelationApi)
 	if err != nil {
@@ -50,6 +50,8 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	//----------------------------------------
 	//populate events
 	for location, dates := range relationObject.LocationsDates {
+		location = formatLocation(location)
+		formatDates(dates)
 		//match the relation location against the locations slice
 		if !slices.Contains(locationObject.Locations, location) {
 			continue
@@ -79,9 +81,22 @@ func formatDate(date string) string {
 	}
 	return date
 }
-func formatDates(dates []string) []string {
-	for i := 0; i < len(dates); i++ {
+func formatDates(dates []string) {
+	for i := range dates {
 		dates[i] = formatDate(dates[i])
 	}
-	return dates
+}
+func formatLocation(location string) string {
+	locationRunes := []rune(location)
+	for i := range locationRunes {
+		if locationRunes[i] == '-' || locationRunes[i] == '_' {
+			locationRunes[i] = ' '
+		}
+	}
+	return string(locationRunes)
+}
+func formatLocations(locations []string) {
+	for i := range locations {
+		locations[i] = formatLocation(locations[i])
+	}
 }
