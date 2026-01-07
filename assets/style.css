@@ -227,6 +227,148 @@ a {
     color: var(--text);
 }
 
+/* ========== ERROR PAGE STYLES ========== */
+
+/* Error page container */
+.error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 85vh;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated background effect */
+.error-container::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.3;
+    }
+}
+
+/* Error content wrapper */
+.error-content {
+    text-align: center;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+    padding: 64px 48px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Error code number */
+.error-code {
+    font-size: 160px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1;
+    text-shadow: none;
+    filter: drop-shadow(0 0 60px rgba(56, 189, 248, 0.4));
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 90%, 100% {
+        transform: translateX(0);
+    }
+    92% {
+        transform: translateX(-3px);
+    }
+    94% {
+        transform: translateX(3px);
+    }
+    96% {
+        transform: translateX(-2px);
+    }
+}
+
+/* Error message heading */
+.error-message {
+    font-size: 32px;
+    color: var(--text);
+    margin: 32px 0 20px 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Error description text */
+.error-description {
+    font-size: 17px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    line-height: 1.7;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Back to home button */
+.error-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    color: #0f172a;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.error-back-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.error-back-btn:hover::before {
+    left: 100%;
+}
+
+.error-back-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(56, 189, 248, 0.5);
+}
+
+.error-back-btn:active {
+    transform: translateY(-2px);
+}
+
 /* ========== RESPONSIVE DESIGN ========== */
 
 /* Tablet size */
@@ -252,5 +394,17 @@ a {
     
     .grid {
         grid-template-columns: 1fr;
+    }
+    
+    .error-code {
+        font-size: 100px;
+    }
+    
+    .error-message {
+        font-size: 26px;
+    }
+    
+    .error-content {
+        padding: 48px 32px;
     }
 }

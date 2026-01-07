@@ -1,36 +1,53 @@
 package handlers
 
 import (
+	"bytes"
 	"groupie-tracker/api"
 	"html/template"
+	"log"
 	"net/http"
 )
 
+// ArtistsHandler displays the main page with all artists
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	//validate path
+	// Only allow root path
 	if r.URL.Path != "/" {
-		http.Error(w, "404 page not found", http.StatusNotFound)
+		renderError(w, "Page not found", http.StatusNotFound)
 		return
 	}
-	//validate method
+
+	// Only allow GET requests
 	if r.Method != http.MethodGet {
-		http.Error(w, "405 method not allowed", http.StatusMethodNotAllowed)
+		renderError(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	//get artists from api
+
+	// Fetch artists from API
 	artists, err := api.GetArtists()
 	if err != nil {
-		http.Error(w, "404 not found", http.StatusNotFound)
+		log.Printf("Error fetching artists: %v", err)
+		renderError(w, "Failed to load artists", http.StatusInternalServerError)
 		return
 	}
-	//parse file
+
+	// Parse template
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
-		http.Error(w, "404 not found", http.StatusNotFound)
+		log.Printf("Error parsing template: %v", err)
+		renderError(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	//execute template
-	err = tmpl.Execute(w, artists)
-	//to handle with buffer or not !!!!!!!!!!!!
 
+	// Execute template into buffer first
+	var buf bytes.Buffer
+	err = tmpl.Execute(&buf, artists)
+	if err != nil {
+		log.Printf("Error executing template: %v", err)
+		renderError(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	// Send successful response
+	w.WriteHeader(http.StatusOK)
+	buf.WriteTo(w)
 }
