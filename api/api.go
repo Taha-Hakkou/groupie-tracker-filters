@@ -19,7 +19,7 @@ func GetArtists() ([]structures.Artist, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("bad status code.")
+		return nil, fmt.Errorf("artists bad status code.")
 	}
 
 	decoder := json.NewDecoder(resp.Body)

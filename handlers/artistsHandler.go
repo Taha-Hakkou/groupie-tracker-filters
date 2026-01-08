@@ -26,11 +26,6 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	artists, err := api.GetArtists()
 	if err != nil {
 		log.Println(err)
-		//if artist is not found
-		if err.Error() == "artist not found." {
-			renderError(w, "Artist not found.", http.StatusNotFound)
-			return
-		}
 		renderError(w, "Failed to load artists", http.StatusInternalServerError)
 		return
 	}
@@ -38,7 +33,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	// parse template
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
-		log.Printf("Error parsing template: %v", err)
+		log.Println("Error parsing artists template.")
 		renderError(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -47,7 +42,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, artists)
 	if err != nil {
-		log.Printf("Error executing template: %v", err)
+		log.Println("Error executing artists template.")
 		renderError(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
