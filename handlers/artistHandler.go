@@ -2,14 +2,15 @@ package handlers
 
 import (
 	"bytes"
-	"groupie-tracker/api"
 	"html/template"
 	"log"
 	"net/http"
 	"strings"
+
+	"groupie-tracker/api"
 )
 
-// artistHandler displays individual artist details
+// Displays individual artist details
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	// only allow GET requests
 	if r.Method != http.MethodGet {
@@ -24,7 +25,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	artist, err := api.GetArtistDetails(stringId)
 	if err != nil {
 		log.Println(err)
-		//if artist is not found
+		// if artist is not found
 		if strings.HasPrefix(err.Error(), "artist not found") {
 			renderError(w, "Artist not found.", http.StatusNotFound)
 			return

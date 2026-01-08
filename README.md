@@ -19,7 +19,7 @@
 
 ## Authors
 
-* **[thakkou](https://github.com/Taha-Hakkou)** - (Leader)
+* **[thakkou](https://github.com/Taha-Hakkou)**
 * **[erezzoug](https://github.com/elmehdi-rezoug)**
 
 ## 🌐 Usage: how to run
@@ -38,5 +38,28 @@
 
 ## 📂 Project Structure
 
-```text
+```
+groupie-tracker
+├── api
+│   └── api.go
+├── assets
+│   └── style.css
+├── go.mod
+├── handlers
+│   ├── artistHandler.go
+│   ├── artistsHandler.go
+│   ├── cssHandler.go
+│   └── renderError.go
+├── main.go
+├── README.md
+├── structures
+│   └── structures.go
+├── templates
+│   ├── artist-details.html
+│   ├── artists.html
+│   └── error.html
+└── utils
+    └── utils.go
+
+6 directories, 14 files
 ```

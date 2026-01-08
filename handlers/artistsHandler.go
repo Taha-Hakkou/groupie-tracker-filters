@@ -2,16 +2,18 @@ package handlers
 
 import (
 	"bytes"
-	"groupie-tracker/api"
 	"html/template"
 	"log"
 	"net/http"
+	"slices"
+
+	"groupie-tracker/api"
 )
 
-// artistsHandler displays the main page with all artists
+// Displays the main page with all artists
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	// only allow root path
-	if r.URL.Path != "/" {
+	if !slices.Contains([]string{"/", "/artists", "/artists/"}, r.URL.Path) {
 		renderError(w, "Page not found", http.StatusNotFound)
 		return
 	}

@@ -3,22 +3,23 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"groupie-tracker/structures"
 	"net/http"
 	"slices"
 	"strings"
+
+	"groupie-tracker/structures"
 )
 
-// extractEvents populates artist with event data from multiple API endpoints
+// Populates artist with event data from multiple API endpoints
 func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	// fetch location data
 	resp, err := http.Get(artist.LocationsApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch locations.")
+		return structures.Artist{}, fmt.Errorf("failed to fetch locations")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("locations bad status code.")
+		return structures.Artist{}, fmt.Errorf("locations bad status code")
 	}
 
 	decoder := json.NewDecoder(resp.Body)
@@ -26,7 +27,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	err = decoder.Decode(&locationObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode locations.")
+		return structures.Artist{}, fmt.Errorf("failed to decode locations")
 	}
 
 	formatLocations(locationObject.Locations)
@@ -34,11 +35,11 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	// fetch date data
 	resp, err = http.Get(artist.DatesApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch dates.")
+		return structures.Artist{}, fmt.Errorf("failed to fetch dates")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("dates bad status code.")
+		return structures.Artist{}, fmt.Errorf("dates bad status code")
 	}
 
 	decoder = json.NewDecoder(resp.Body)
@@ -46,7 +47,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	err = decoder.Decode(&dateObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode dates.")
+		return structures.Artist{}, fmt.Errorf("failed to decode dates")
 	}
 
 	formatDates(dateObject.Dates)
@@ -54,11 +55,11 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	// fetch relation data (location->dates mapping)
 	resp, err = http.Get(artist.RelationApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch relations.")
+		return structures.Artist{}, fmt.Errorf("failed to fetch relations")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("relations bad status code.")
+		return structures.Artist{}, fmt.Errorf("relations bad status code")
 	}
 
 	decoder = json.NewDecoder(resp.Body)
@@ -66,7 +67,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	err = decoder.Decode(&relationObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode relations.")
+		return structures.Artist{}, fmt.Errorf("failed to decode relations")
 	}
 
 	// build events from relations, validating against actual locations and dates
@@ -99,26 +100,26 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	return artist, nil
 }
 
-// formatDate removes leading asterisk from dates
-func formatDate(date string) string {
-	return strings.TrimPrefix(date, "*")
-}
+// Removes leading asterisk from dates
+// func formatDate(date string) string {
+// 	return strings.TrimPrefix(date, "*")
+// }
 
-// formatDates formats a slice of dates in-place
+// Formats a slice of dates in-place
 func formatDates(dates []string) {
 	for i := range dates {
-		dates[i] = formatDate(dates[i])
+		dates[i] = strings.TrimPrefix(dates[i], "*")
 	}
 }
 
-// formatLocation replaces dashes and underscores with spaces
+// Replaces dashes and underscores with spaces
 func formatLocation(location string) string {
 	location = strings.ReplaceAll(location, "-", " ")
 	location = strings.ReplaceAll(location, "_", " ")
 	return location
 }
 
-// formatLocations formats a slice of locations in-place
+// Formats a slice of locations in-place
 func formatLocations(locations []string) {
 	for i := range locations {
 		locations[i] = formatLocation(locations[i])

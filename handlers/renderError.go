@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// renderError displays error page with proper status code
+// Displays error page with proper status code
 func renderError(w http.ResponseWriter, message string, statusCode int) {
 	tmpl, err := template.ParseFiles("templates/error.html")
 	if err != nil {
