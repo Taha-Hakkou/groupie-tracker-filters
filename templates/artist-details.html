@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Name}} · Groupie Tracker</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1 class="new-rocker-regular">Groupie Tracker</h1>
+    
+    <div class="container">
+        <a href="/" class="back">← Back to artists</a>
+        
+        <!-- Artist Header -->
+        <div class="artist-header">
+            <img src="{{.Image}}" alt="{{.Name}}">
+            <div class="artist-info">
+                <h1 class="new-rocker-regular">{{.Name}}</h1>
+                <div class="meta">
+                    Formed in {{.CreationDate}} · First album: {{.FirstAlbum}}
+                </div>
+                <div class="section">
+                    <h2>Members</h2>
+                    <div class="members">
+                        {{ range .Members }}
+                        <span class="member">{{.}}</span>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Events -->
+        <div class="section">
+            <h2>Events</h2>
+            {{ range .Events }}
+            <div class="event-card">
+                <h3>📍 {{.Location}}</h3>
+                <ul class="dates-list">
+                    {{range .Dates}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>

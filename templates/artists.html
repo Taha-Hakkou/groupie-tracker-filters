@@ -1,123 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Groupie Tracker</title>
-    <link rel="stylesheet" href="/global.css">
-
-    <style>
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-        }
-
-        .card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent);
-        }
-
-        .meta {
-            font-size: 0.9rem;
-            color: var(--muted);
-            margin-bottom: 1rem;
-        }
-
-        .section {
-            margin-bottom: 1rem;
-        }
-
-        .section h3 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.3rem;
-            color: var(--muted);
-        }
-
-        .members {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .member {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            padding: 0.3rem 0.6rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
-        }
-
-        .links {
-            display: grid;
-            gap: 0.3rem;
-            font-size: 0.85rem;
-        }
-
-        .links span {
-            color: var(--muted);
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 1.5rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
-
     <header>
         <h1 class="new-rocker-regular">Groupie Tracker</h1>
     </header>
-
+    
     <div class="grid">
-
-        {{ range .Artists }}
-        <!-- Artist Card -->
-        <a class="card" href="/artists/{{.Id}}">
+        {{ range . }}
+        <a class="card" href="/{{.Id}}">
             <img src="{{.Image}}" alt="{{.Name}}">
-
             <div class="card-content">
                 <h2 class="new-rocker-regular">{{.Name}}</h2>
-
                 <div class="meta">
-                    Formed in {{.CreationDate}}
+                    Formed in {{.CreationDate}} · First album: {{.FirstAlbum}}
                 </div>
-
                 <div class="section">
                     <h3>Members</h3>
                     <div class="members">
@@ -126,20 +28,9 @@
                         {{end}}
                     </div>
                 </div>
-
-                <!--div class="section links">
-                    <span><strong>Locations:</strong> World Tour</span>
-                    <span><strong>Concert Dates:</strong> 2024–2025</span>
-                    <span><strong>Relations:</strong> example.com</span>
-                </div-->
             </div>
         </a>
-
-        <!-- Duplicate cards as needed -->
         {{end}}
-
     </div>
-
 </body>
-
 </html>
