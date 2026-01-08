@@ -61,7 +61,7 @@ func GetArtistDetails(id string) (structures.Artist, error) {
 	// populate events with locations and dates
 	populatedArtist, err := utils.ExtractEvents(artist)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to extract events.")
+		return structures.Artist{}, fmt.Errorf("failed to extract events... %w", err)
 	}
 
 	return populatedArtist, nil
