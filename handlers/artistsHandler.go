@@ -8,29 +8,34 @@ import (
 	"net/http"
 )
 
-// ArtistsHandler displays the main page with all artists
+// artistsHandler displays the main page with all artists
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	// Only allow root path
+	// only allow root path
 	if r.URL.Path != "/" {
 		renderError(w, "Page not found", http.StatusNotFound)
 		return
 	}
 
-	// Only allow GET requests
+	// only allow GET requests
 	if r.Method != http.MethodGet {
 		renderError(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	// Fetch artists from API
+	// fetch artists from API
 	artists, err := api.GetArtists()
 	if err != nil {
-		log.Printf("Error fetching artists: %v", err)
+		log.Println(err)
+		//if artist is not found
+		if err.Error() == "artist not found." {
+			renderError(w, "Artist not found.", http.StatusNotFound)
+			return
+		}
 		renderError(w, "Failed to load artists", http.StatusInternalServerError)
 		return
 	}
 
-	// Parse template
+	// parse template
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
 		log.Printf("Error parsing template: %v", err)
@@ -38,7 +43,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Execute template into buffer first
+	// execute template into buffer first
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, artists)
 	if err != nil {
@@ -47,7 +52,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send successful response
+	// send successful response
 	w.WriteHeader(http.StatusOK)
 	buf.WriteTo(w)
 }

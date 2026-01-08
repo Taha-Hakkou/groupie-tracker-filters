@@ -10,7 +10,7 @@ import (
 func renderError(w http.ResponseWriter, message string, statusCode int) {
 	tmpl, err := template.ParseFiles("templates/error.html")
 	if err != nil {
-		// Fallback if error template fails
+		// fallback if error template fails
 		http.Error(w, message, statusCode)
 		return
 	}
@@ -23,7 +23,7 @@ func renderError(w http.ResponseWriter, message string, statusCode int) {
 		StatusCode: statusCode,
 	}
 
-	// Execute into buffer to catch any template errors
+	// execute into buffer to catch any template errors
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, data)
 	if err != nil {
@@ -31,7 +31,7 @@ func renderError(w http.ResponseWriter, message string, statusCode int) {
 		return
 	}
 
-	// Send error response with proper status code
+	// send error response with proper status code
 	w.WriteHeader(statusCode)
 	buf.WriteTo(w)
 }
