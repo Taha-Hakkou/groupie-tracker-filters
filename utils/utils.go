@@ -16,7 +16,6 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to fetch locations.")
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return structures.Artist{}, fmt.Errorf("locations bad status code.")
@@ -25,6 +24,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	decoder := json.NewDecoder(resp.Body)
 	locationObject := structures.LocationObject{}
 	err = decoder.Decode(&locationObject)
+	resp.Body.Close()
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to decode locations.")
 	}
@@ -36,7 +36,6 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to fetch dates.")
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return structures.Artist{}, fmt.Errorf("dates bad status code.")
@@ -45,6 +44,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	decoder = json.NewDecoder(resp.Body)
 	dateObject := structures.DateObject{}
 	err = decoder.Decode(&dateObject)
+	resp.Body.Close()
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to decode dates.")
 	}
@@ -56,7 +56,6 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to fetch relations.")
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return structures.Artist{}, fmt.Errorf("relations bad status code.")
@@ -65,6 +64,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	decoder = json.NewDecoder(resp.Body)
 	relationObject := structures.RelationObject{}
 	err = decoder.Decode(&relationObject)
+	resp.Body.Close()
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to decode relations.")
 	}

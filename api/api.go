@@ -16,7 +16,6 @@ func GetArtists() ([]structures.Artist, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch artists.")
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("artists bad status code.")
@@ -25,6 +24,7 @@ func GetArtists() ([]structures.Artist, error) {
 	decoder := json.NewDecoder(resp.Body)
 	artists := []structures.Artist{}
 	err = decoder.Decode(&artists)
+	resp.Body.Close()
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode artists.")
 	}
@@ -40,7 +40,6 @@ func GetArtistDetails(id string) (structures.Artist, error) {
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to fetch artist.")
 	}
-	defer resp.Body.Close()
 
 	// check for 404 or invalid artist ID
 	if resp.StatusCode == http.StatusNotFound {
@@ -54,6 +53,7 @@ func GetArtistDetails(id string) (structures.Artist, error) {
 	decoder := json.NewDecoder(resp.Body)
 	artist := structures.Artist{}
 	err = decoder.Decode(&artist)
+	resp.Body.Close()
 	if err != nil {
 		return structures.Artist{}, fmt.Errorf("failed to decode artist.")
 	}
