@@ -38,16 +38,16 @@ func GetArtistDetails(id string) (structures.Artist, error) {
 
 	resp, err := http.Get(artistEndpoint)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch artist.")
+		return structures.Artist{}, fmt.Errorf("failed to fetch artist %s.", id)
 	}
 
 	// check for 404 or invalid artist ID
 	if resp.StatusCode == http.StatusNotFound {
-		return structures.Artist{}, fmt.Errorf("artist not found")
+		return structures.Artist{}, fmt.Errorf("artist %s not found", id)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("failed to fetch artist.")
+		return structures.Artist{}, fmt.Errorf("failed to fetch artist %s.", id)
 	}
 
 	decoder := json.NewDecoder(resp.Body)
@@ -55,13 +55,13 @@ func GetArtistDetails(id string) (structures.Artist, error) {
 	err = decoder.Decode(&artist)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode artist.")
+		return structures.Artist{}, fmt.Errorf("failed to decode artist %s.", id)
 	}
 
 	// populate events with locations and dates
 	populatedArtist, err := utils.ExtractEvents(artist)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to extract events... %w", err)
+		return structures.Artist{}, fmt.Errorf("failed to extract artist %s events... %w", id, err)
 	}
 
 	return populatedArtist, nil
