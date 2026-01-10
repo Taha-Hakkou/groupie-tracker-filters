@@ -19,7 +19,7 @@
 
 ## Authors
 
-* **[thakkou](https://github.com/Taha-Hakkou)**
+* **[thakkou](https://github.com/Taha-Hakkou)** - captain
 * **[erezzoug](https://github.com/elmehdi-rezoug)**
 
 ## 🌐 Usage: how to run
