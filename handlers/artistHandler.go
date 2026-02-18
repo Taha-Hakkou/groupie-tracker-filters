@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"groupie-tracker/api"
+	"groupie-tracker/gtapi"
 )
 
 // Displays individual artist details
@@ -22,7 +22,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	stringId := r.PathValue("id")
 
 	// fetch artist details from API
-	artist, err := api.GetArtistDetails(stringId)
+	artist, err := gtapi.GetArtistDetails(stringId)
 	if err != nil {
 		log.Println(err)
 		// if artist is not found

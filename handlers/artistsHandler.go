@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"slices"
 
-	"groupie-tracker/api"
+	"groupie-tracker/gtapi"
 )
 
 // Displays the main page with all artists
@@ -25,7 +25,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fetch artists from API
-	artists, err := api.GetArtists()
+	artists, err := gtapi.GetArtists()
 	if err != nil {
 		log.Println(err)
 		renderError(w, "Failed to load artists", http.StatusInternalServerError)

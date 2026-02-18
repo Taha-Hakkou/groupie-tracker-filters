@@ -1,4 +1,4 @@
-package utils
+package gtapi
 
 import (
 	"encoding/json"
@@ -6,28 +6,26 @@ import (
 	"net/http"
 	"slices"
 	"strings"
-
-	"groupie-tracker/structures"
 )
 
 // Populates artist with event data from multiple API endpoints
-func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
+func ExtractEvents(artist Artist) (Artist, error) {
 	// fetch location data
 	resp, err := http.Get(artist.LocationsApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch locations")
+		return Artist{}, fmt.Errorf("failed to fetch locations")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("locations bad status code")
+		return Artist{}, fmt.Errorf("locations bad status code")
 	}
 
 	decoder := json.NewDecoder(resp.Body)
-	locationObject := structures.LocationObject{}
+	locationObject := LocationObject{}
 	err = decoder.Decode(&locationObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode locations")
+		return Artist{}, fmt.Errorf("failed to decode locations")
 	}
 
 	formatLocations(locationObject.Locations)
@@ -35,19 +33,19 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	// fetch date data
 	resp, err = http.Get(artist.DatesApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch dates")
+		return Artist{}, fmt.Errorf("failed to fetch dates")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("dates bad status code")
+		return Artist{}, fmt.Errorf("dates bad status code")
 	}
 
 	decoder = json.NewDecoder(resp.Body)
-	dateObject := structures.DateObject{}
+	dateObject := DateObject{}
 	err = decoder.Decode(&dateObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode dates")
+		return Artist{}, fmt.Errorf("failed to decode dates")
 	}
 
 	formatDates(dateObject.Dates)
@@ -55,19 +53,19 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 	// fetch relation data (location->dates mapping)
 	resp, err = http.Get(artist.RelationApi)
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to fetch relations")
+		return Artist{}, fmt.Errorf("failed to fetch relations")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return structures.Artist{}, fmt.Errorf("relations bad status code")
+		return Artist{}, fmt.Errorf("relations bad status code")
 	}
 
 	decoder = json.NewDecoder(resp.Body)
-	relationObject := structures.RelationObject{}
+	relationObject := RelationObject{}
 	err = decoder.Decode(&relationObject)
 	resp.Body.Close()
 	if err != nil {
-		return structures.Artist{}, fmt.Errorf("failed to decode relations")
+		return Artist{}, fmt.Errorf("failed to decode relations")
 	}
 
 	// build events from relations, validating against actual locations and dates
@@ -80,7 +78,7 @@ func ExtractEvents(artist structures.Artist) (structures.Artist, error) {
 			continue
 		}
 
-		event := structures.Event{Location: location}
+		event := Event{Location: location}
 
 		// filter dates to only include valid ones
 		for _, date := range dates {

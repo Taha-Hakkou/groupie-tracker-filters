@@ -1,4 +1,4 @@
-package structures
+package gtapi
 
 type Artist struct {
 	Id           int
