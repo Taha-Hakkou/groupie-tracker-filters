@@ -10,6 +10,89 @@
     <header>
         <h1 class="new-rocker-regular">Groupie Tracker</h1>
     </header>
+
+    <main class="main">
+    <!-- ========== FILTERS SECTION ========== -->
+    <div class="filters">
+    <form method="GET" action="/">
+
+        <h2 class="new-rocker-regular filters-title">Filters</h2>
+
+        <div class="filters-grid">
+
+            <!-- Creation Date (Range Slider) -->
+            <div class="filter-group">
+                <h3>Creation Year</h3>
+                <div class="range-slider">
+                    <input type="range" name="creation_min" min="1950" max="2025" value="1950">
+                    <!--input type="range" name="creation_max" min="1950" max="2025" value="2025"-->
+                    <div class="range-values">
+                        <span>From</span>
+                        <span>To</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Album Date (Range Slider) -->
+            <div class="filter-group">
+                <h3>First Album Year</h3>
+                <div class="range-slider">
+                    <input type="range" name="album_min" min="1950" max="2025" value="1950">
+                    <!--input type="range" name="album_max" min="1950" max="2025" value="2025"-->
+                    <div class="range-values">
+                        <span>From</span>
+                        <span>To</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Number of Members (Checkbox Filter) -->
+            <div class="filter-group">
+                <h3>Number of Members</h3>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="members" value="1"> 1</label>
+                    <label><input type="checkbox" name="members" value="2"> 2</label>
+                    <label><input type="checkbox" name="members" value="3"> 3</label>
+                    <label><input type="checkbox" name="members" value="4"> 4</label>
+                    <label><input type="checkbox" name="members" value="5"> 5+</label>
+                </div>
+            </div>
+
+            <!-- Concert Countries -->
+            <div class="filter-group">
+                <h3>Concert Countries</h3>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="country" value="USA"> USA</label>
+                    <label><input type="checkbox" name="country" value="UK"> UK</label>
+                    <label><input type="checkbox" name="country" value="France"> France</label>
+                    <label><input type="checkbox" name="country" value="Germany"> Germany</label>
+                    <label><input type="checkbox" name="country" value="Canada"> Canada</label>
+                </div>
+            </div>
+
+            <!-- Concert Cities -->
+            <div class="filter-group">
+                <h3>Concert Cities</h3>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="city" value="New York"> New York</label>
+                    <label><input type="checkbox" name="city" value="London"> London</label>
+                    <label><input type="checkbox" name="city" value="Paris"> Paris</label>
+                    <label><input type="checkbox" name="city" value="Berlin"> Berlin</label>
+                    <label><input type="checkbox" name="city" value="Toronto"> Toronto</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="filter-btn">Apply Filters</button>
+            <a href="/" class="reset-btn">Reset</a>
+        </div>
+
+    </form>
+    </div>
+    <!-- ========== FILTERS SECTION END ========== -->
+
     
     <div class="grid">
         {{ range . }}
@@ -32,5 +115,6 @@
         </a>
         {{end}}
     </div>
+    </main>
 </body>
 </html>
