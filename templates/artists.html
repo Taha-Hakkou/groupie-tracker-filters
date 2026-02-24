@@ -14,7 +14,7 @@
     <main class="main">
     <!-- ========== FILTERS SECTION ========== -->
     <div class="filters">
-    <form method="GET" action="/">
+    <form action="/" method="GET">
 
         <h2 class="new-rocker-regular filters-title">Filters</h2>
 
@@ -23,27 +23,29 @@
             <!-- Creation Date (Range Slider) -->
             <div class="filter-group">
                 <h3>Creation Year</h3>
-                <div class="range-slider">
-                    <input type="range" name="creation_min" min="1950" max="2025" value="1950">
-                    <!--input type="range" name="creation_max" min="1950" max="2025" value="2025"-->
-                    <div class="range-values">
-                        <span>From</span>
-                        <span>To</span>
-                    </div>
-                </div>
+                <label for="cmin">From:</label>
+                <input type="number" id="cmin" name="cfrom">
+                <br>
+                <label for="cmax">To:</label>
+                <input type="number" id="cmax" name="cto">
             </div>
 
             <!-- First Album Date (Range Slider) -->
             <div class="filter-group">
                 <h3>First Album Year</h3>
-                <div class="range-slider">
+                <label for="album-min">From:</label>
+                <input type="date" id="album-min" name="afrom">
+                <br>
+                <label for="album-max">To:</label>
+                <input type="date" id="album-max" name="ato">
+                <!-- <div class="range-slider">
                     <input type="range" name="album_min" min="1950" max="2025" value="1950">
-                    <!--input type="range" name="album_max" min="1950" max="2025" value="2025"-->
+                    input type="range" name="album_max" min="1950" max="2025" value="2025"
                     <div class="range-values">
                         <span>From</span>
                         <span>To</span>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <!-- Number of Members (Checkbox Filter) -->
@@ -54,24 +56,31 @@
                     <label><input type="checkbox" name="members" value="2"> 2</label>
                     <label><input type="checkbox" name="members" value="3"> 3</label>
                     <label><input type="checkbox" name="members" value="4"> 4</label>
-                    <label><input type="checkbox" name="members" value="5"> 5+</label>
+                    <label><input type="checkbox" name="members" value="5"> 5</label>
+                    <label><input type="checkbox" name="members" value="6"> 6</label>
+                    <label><input type="checkbox" name="members" value="7"> 7</label>
                 </div>
             </div>
 
             <!-- Concert Countries -->
             <div class="filter-group">
-                <h3>Concert Countries</h3>
-                <div class="checkbox-group">
+                <h3>Concert Location</h3>
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country">
+                <br>
+                <label for="city">City</label>
+                <input type="text" id="city" name="city">
+                <!-- <div class="checkbox-group">
                     <label><input type="checkbox" name="country" value="USA"> USA</label>
                     <label><input type="checkbox" name="country" value="UK"> UK</label>
                     <label><input type="checkbox" name="country" value="France"> France</label>
                     <label><input type="checkbox" name="country" value="Germany"> Germany</label>
                     <label><input type="checkbox" name="country" value="Canada"> Canada</label>
-                </div>
+                </div> -->
             </div>
 
             <!-- Concert Cities -->
-            <div class="filter-group">
+            <!-- <div class="filter-group">
                 <h3>Concert Cities</h3>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="city" value="New York"> New York</label>
@@ -80,22 +89,31 @@
                     <label><input type="checkbox" name="city" value="Berlin"> Berlin</label>
                     <label><input type="checkbox" name="city" value="Toronto"> Toronto</label>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
-        <div class="filter-actions">
-            <button type="submit" class="filter-btn">Apply Filters</button>
-            <a href="/" class="reset-btn">Reset</a>
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                {{if .Error}}
+                <p style="align-content: center; color: red;">❌ {{.Error}}</p>
+                {{end}}
+            </div>
+            <div class="filter-actions">
+                <a href="/" class="reset-btn">Reset</a>
+                <button type="submit" class="filter-btn">Apply Filters</button>
+            </div>
         </div>
 
     </form>
     </div>
     <!-- ========== FILTERS SECTION END ========== -->
 
-    
+    {{if eq (len .Artists) 0}}
+        <h1 class="new-rocker-regular" style="text-align: center; margin: 32px;">No Results Found</h1>
+    {{end}}
     <div class="grid">
-        {{ range . }}
+        {{ range .Artists }}
         <a class="card" href="/artists/{{.Id}}">
             <img src="{{.Image}}" alt="{{.Name}}">
             <div class="card-content">

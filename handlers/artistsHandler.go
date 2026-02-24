@@ -6,13 +6,16 @@ import (
 	"log"
 	"net/http"
 	"slices"
+	"strconv"
+	"strings"
+	"time"
 
 	"groupie-tracker/gtapi"
 )
 
 // Displays the main page with all artists
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	// only allow root path
+	// only allow root and artists path
 	if !slices.Contains([]string{"/", "/artists", "/artists/"}, r.URL.Path) {
 		renderError(w, "Page not found", http.StatusNotFound)
 		return
@@ -32,6 +35,46 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// filter query params
+	var errorMessage string
+
+	// creation
+	a := strings.TrimSpace(r.URL.Query().Get("cfrom"))
+	b := strings.TrimSpace(r.URL.Query().Get("cto"))
+	cfrom, err1 := strconv.Atoi(a) // default: 0
+	cto, err2 := strconv.Atoi(b)
+	if (a != "" && err1 != nil) || (b != "" && err2 != nil) {
+		errorMessage = "creation year error: non-integer value"
+	}
+	if b == "" || err2 != nil {
+		cto = time.Now().Year() // default: current year
+	}
+	var creationYear = gtapi.Range{
+		From: cfrom,
+		To:   cto,
+	}
+
+	// first album
+	// x := r.URL.Query().Get("afrom")
+	// y := r.URL.Query().Get("ato")
+	// afrom, _ := strconv.Atoi(x)
+	// ato, _ := strconv.Atoi(y)
+
+	// members
+	members := r.URL.Query()["members"]
+	var bandsizes []int
+	for _, member := range members {
+		n, err := strconv.Atoi(member)
+		if err != nil {
+			continue
+		}
+		bandsizes = append(bandsizes, n)
+	}
+
+	var filters = gtapi.NewFilters(creationYear, bandsizes)
+	filteredArtists := gtapi.Filter(artists, filters)
+	// -------------------------------------------
+
 	// parse template
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
@@ -42,7 +85,13 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// execute template into buffer first
 	var buf bytes.Buffer
-	err = tmpl.Execute(&buf, artists)
+	err = tmpl.Execute(&buf, struct {
+		Error   string
+		Artists []gtapi.Artist
+	}{
+		Error:   errorMessage,
+		Artists: filteredArtists,
+	}) // artists
 	if err != nil {
 		log.Println("Error executing artists template.")
 		renderError(w, "Internal server error", http.StatusInternalServerError)
