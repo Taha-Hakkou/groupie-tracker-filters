@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -71,8 +70,6 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		From: from,
 		To:   to,
 	}
-	fmt.Println(from)
-	fmt.Println(to)
 
 	// members
 	members := r.URL.Query()["members"]
@@ -86,10 +83,13 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// location
-	// country := r.URL.Query().Get("country")
-	// city := r.URL.Query().Get("city")
+	country := strings.TrimSpace(r.URL.Query().Get("country"))
+	city := strings.TrimSpace(r.URL.Query().Get("city"))
+	if country == "" && city != "" {
+		errorMessage = "location error: country not specified"
+	}
 
-	var filters = gtapi.NewFilters(creationYear, firstAlbumYear, bandsizes)
+	var filters = gtapi.NewFilters(creationYear, firstAlbumYear, bandsizes, country, city)
 	filteredArtists := gtapi.Filter(artists, filters)
 	// -------------------------------------------
 

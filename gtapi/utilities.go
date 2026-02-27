@@ -28,7 +28,7 @@ func ExtractEvents(artist Artist) (Artist, error) {
 		return Artist{}, fmt.Errorf("failed to decode locations")
 	}
 
-	formatLocations(locationObject.Locations)
+	// formatLocations(locationObject.Locations)
 
 	// fetch date data
 	resp, err = http.Get(artist.DatesApi)
@@ -70,7 +70,7 @@ func ExtractEvents(artist Artist) (Artist, error) {
 
 	// build events from relations, validating against actual locations and dates
 	for location, dates := range relationObject.LocationsDates {
-		location = formatLocation(location)
+		// location = formatLocation(location)
 		formatDates(dates)
 
 		// skip if location not in valid list
@@ -110,16 +110,16 @@ func formatDates(dates []string) {
 	}
 }
 
-// Replaces dashes and underscores with spaces
-func formatLocation(location string) string {
-	location = strings.ReplaceAll(location, "-", " ")
-	location = strings.ReplaceAll(location, "_", " ")
-	return location
-}
+// // Replaces dashes and underscores with spaces
+// func formatLocation(location string) string {
+// 	location = strings.ReplaceAll(location, "-", " ")
+// 	location = strings.ReplaceAll(location, "_", " ")
+// 	return location
+// }
 
-// Formats a slice of locations in-place
-func formatLocations(locations []string) {
-	for i := range locations {
-		locations[i] = formatLocation(locations[i])
-	}
-}
+// // Formats a slice of locations in-place
+// func formatLocations(locations []string) {
+// 	for i := range locations {
+// 		locations[i] = formatLocation(locations[i])
+// 	}
+// }
