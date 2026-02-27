@@ -11,7 +11,7 @@ import (
 )
 
 // Displays individual artist details
-func ArtistHandler(w http.ResponseWriter, r *http.Request) {
+func Artist(w http.ResponseWriter, r *http.Request) {
 	// only allow GET requests
 	if r.Method != http.MethodGet {
 		renderError(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -35,9 +35,9 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// parse template
-	tmpl, err := template.ParseFiles("templates/artist-details.html")
+	tmpl, err := template.ParseFiles("templates/artist.html")
 	if err != nil {
-		log.Println("Error parsing artist-details template.")
+		log.Println("Error parsing artist template.")
 		renderError(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -46,7 +46,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	var buf bytes.Buffer
 	err = tmpl.Execute(&buf, artist)
 	if err != nil {
-		log.Println("Error executing artist-details template.")
+		log.Println("Error executing artist template.")
 		renderError(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}

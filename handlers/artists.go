@@ -14,7 +14,7 @@ import (
 )
 
 // Displays the main page with all artists
-func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
+func Artists(w http.ResponseWriter, r *http.Request) {
 	// only allow root and artists path
 	if !slices.Contains([]string{"/", "/artists", "/artists/"}, r.URL.Path) {
 		renderError(w, "Page not found", http.StatusNotFound)
@@ -89,7 +89,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		errorMessage = "location error: country not specified"
 	}
 
-	var filters = gtapi.NewFilters(creationYear, firstAlbumYear, bandsizes, country, city)
+	var filters = gtapi.New(creationYear, firstAlbumYear, bandsizes, country, city)
 	filteredArtists := gtapi.Filter(artists, filters)
 	// -------------------------------------------
 

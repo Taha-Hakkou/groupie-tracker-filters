@@ -9,9 +9,9 @@ import (
 
 func main() {
 	// register routes
-	http.HandleFunc("/style.css", handlers.CssHandler)
-	http.HandleFunc("/", handlers.ArtistsHandler)
-	http.HandleFunc("/artists/{id}", handlers.ArtistHandler)
+	http.HandleFunc("/style.css", handlers.Styles)
+	http.HandleFunc("/", handlers.Artists)
+	http.HandleFunc("/artists/{id}", handlers.Artist)
 
 	// start server
 	log.Println("Server listening on http://localhost:8080")

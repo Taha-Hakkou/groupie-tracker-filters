@@ -1,5 +1,7 @@
 package gtapi
 
+import "time"
+
 type Artist struct {
 	Id           int
 	Image        string
@@ -28,4 +30,21 @@ type DateObject struct {
 
 type RelationObject struct {
 	LocationsDates map[string][]string `json:"datesLocations"`
+}
+
+// ******** Filter structures **********
+
+type Range struct {
+	From, To int
+}
+
+type TimeRange struct {
+	From, To time.Time
+}
+
+type Filters struct {
+	CreationYear   Range
+	FirstAlbumDate TimeRange
+	BandSizes      []int
+	Country, City  string
 }

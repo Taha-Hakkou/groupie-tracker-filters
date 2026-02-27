@@ -7,32 +7,14 @@ import (
 	"time"
 )
 
-type Range struct {
-	From, To int
-}
-
-type TimeRange struct {
-	From, To time.Time
-}
-
-type Filters struct {
-	CreationYear   Range
-	FirstAlbumDate TimeRange
-	BandSizes      []int // number of members
-	Country, City  string
-}
-
-func NewFilters(creationYear Range, firstAlbumYear TimeRange, bandsizes []int, country, city string) Filters {
-	filters := Filters{
+func New(creationYear Range, firstAlbumYear TimeRange, bandsizes []int, country, city string) Filters {
+	return Filters{
 		CreationYear:   creationYear,
 		FirstAlbumDate: firstAlbumYear,
 		BandSizes:      bandsizes,
 		Country:        country,
 		City:           city,
 	}
-	// if not set return all artists !!!!!!!
-
-	return filters
 }
 
 func Filter(artists []Artist, filters Filters) []Artist {
@@ -52,7 +34,6 @@ func Filter(artists []Artist, filters Filters) []Artist {
 			continue
 		}
 		// location
-
 		artist, _ = GetArtistDetails(strconv.Itoa(artist.Id))
 		var countries []string
 		var locations = map[string][]string{} // maps countries to cities
