@@ -49,10 +49,13 @@ func Filter(artists []Artist, filters Filters) []Artist {
 			}
 		}
 		if filters.Country != "" {
-			if !slices.Contains(countries, strings.ToLower(filters.Country)) {
+			formattedCountry := strings.ToLower(filters.Country)
+			if !slices.Contains(countries, formattedCountry) {
 				continue
 			}
-			if filters.City != "" && !slices.Contains(locations[filters.Country], strings.ToLower(filters.City)) {
+			formattedCity := strings.ToLower(filters.City)
+			formattedCity = strings.ReplaceAll(formattedCity, " ", "_")
+			if filters.City != "" && !slices.Contains(locations[formattedCountry], formattedCity) {
 				continue
 			}
 		}
