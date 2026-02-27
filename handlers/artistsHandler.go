@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -54,11 +55,24 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		To:   cto,
 	}
 
-	// first album
-	// x := r.URL.Query().Get("afrom")
-	// y := r.URL.Query().Get("ato")
-	// afrom, _ := strconv.Atoi(x)
-	// ato, _ := strconv.Atoi(y)
+	// first album date
+	layout := "2006-01-02"
+	x := r.URL.Query().Get("afrom")
+	y := r.URL.Query().Get("ato")
+	from, err1 := time.Parse(layout, x)
+	to, err2 := time.Parse(layout, y)
+	if (x != "" && err1 != nil) || (y != "" && err2 != nil) {
+		errorMessage = "first album year error: incorrect date format"
+	}
+	if y == "" || err2 != nil {
+		to = time.Now().UTC() // default: current date
+	}
+	var firstAlbumYear = gtapi.TimeRange{
+		From: from,
+		To:   to,
+	}
+	fmt.Println(from)
+	fmt.Println(to)
 
 	// members
 	members := r.URL.Query()["members"]
@@ -71,7 +85,11 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		bandsizes = append(bandsizes, n)
 	}
 
-	var filters = gtapi.NewFilters(creationYear, bandsizes)
+	// location
+	// country := r.URL.Query().Get("country")
+	// city := r.URL.Query().Get("city")
+
+	var filters = gtapi.NewFilters(creationYear, firstAlbumYear, bandsizes)
 	filteredArtists := gtapi.Filter(artists, filters)
 	// -------------------------------------------
 
