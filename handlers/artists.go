@@ -92,7 +92,6 @@ func Artists(w http.ResponseWriter, r *http.Request) {
 	var filters = gtapi.New(creationYear, firstAlbumYear, bandsizes, country, city)
 	filteredArtists := gtapi.Filter(artists, filters)
 	// -------------------------------------------
-
 	// parse template
 	tmpl, err := template.ParseFiles("templates/artists.html")
 	if err != nil {
