@@ -5,7 +5,7 @@
 **Groupie Trackers** is a web-based project that focuses on consuming a provided API and manipulating the data it returns in order to build an informative and interactive website. The application retrieves structured data from the API, processes it, and displays it in a clear and user-friendly format.
 
 ## 🚀 Features
-
+ 
 * Fetches data from a given external API
 * Processes and organizes API data
 * Displays information dynamically on a website
